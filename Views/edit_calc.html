@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            border-collapse: separate; /* Remove space between table cells */
+            border-spacing: 10px 0; /* horizontal and vertical spacing */
+            text-align: left;
+        }
+        .edit-button { margin-top: 0; }
+        form { margin: 0; }
+        button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <form method="post" action="/edit_calc">
+        <h3>Rediger beregning</h3>
+        <label for="house_price">Boligens pris:</label><br>
+        <input type="text" id="house_price" name="house_price" value="{% if input_house_price %}{{ input_house_price }}{% else %}1.000.000{% endif %}"><br>
+        <label for="down_payment">Egen opsparing:</label><br>
+        <input type="text" id="down_payment" name="down_payment" value="{% if input_down_payment %}{{ input_down_payment }}{% else %}50.000{% endif %}"><br>
+        <label for="bond_price">Kurs på lån:</label><br>
+        <input type="text" id="bond_price" name="bond_price" value="{% if input_bond_price %}{{ input_bond_price }}{% else %}95,8{% endif %}"><br>
+        <label for="dropdown">Vælg bank:</label><br>
+        <select id="dropdown" name="dropdown">
+            {% for bank_name in dropdown_bank_names %}
+            <option value="{{ bank_name }}" {% if bank_name == selected_bank %} selected {% endif %}>{{ bank_name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="hidden" name="calc_id" value="{{ calc_id }}">
+        <button type="submit">Beregn</button>
+        <br><br>
+        <label>Hovedstol: {{ principal_value }}</label><br>
+        <label>Kurstab: {{ capital_loss }}</label><br>
+    </form>
+    <br>
+
+    <form method="post" action="/save_changes_to_calc">
+        <input type="hidden" name="house_price" value="{% if input_house_price %}{{ input_house_price }}{% else %}1.000.000{% endif %}">
+        <input type="hidden" name="down_payment" value="{% if input_down_payment %}{{ input_down_payment }}{% else %}50.000{% endif %}">
+        <input type="hidden" name="bond_price" value="{% if input_bond_price %}{{ input_bond_price }}{% else %}95,8{% endif %}">
+        <input type="hidden" name="dropdown" value="{{ selected_bank }}">
+        <input type="hidden" name="calc_id" value="{{ calc_id }}">
+        <button type="submit">Gem ændringer</button>
+    </form>
+
+    <form method="post" action="/logged_in">
+        <input type="hidden" name="house_price" value="{% if input_house_price %}{{ input_house_price }}{% else %}1.000.000{% endif %}">
+        <input type="hidden" name="down_payment" value="{% if input_down_payment %}{{ input_down_payment }}{% else %}50.000{% endif %}">
+        <input type="hidden" name="bond_price" value="{% if input_bond_price %}{{ input_bond_price }}{% else %}95,8{% endif %}">
+        <input type="hidden" name="dropdown" value="{{ selected_bank }}">
+        <input type="submit" value="Fortryd/tilbage">
+    </form>
+</body>
+</html>

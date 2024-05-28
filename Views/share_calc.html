@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            border-collapse: separate; /* Remove space between table cells */
+            border-spacing: 10px 0; /* horizontal and vertical spacing */
+            text-align: left;
+        }
+        .edit-button { margin-top: 0; }
+        form { margin: 0; }
+        button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h3>Del beregning med bruger(e)</h3>
+    <label for="house_price">Boligens pris:</label><br>
+    <input type="text" id="house_price" name="house_price" value="{{ input_house_price }}" readonly><br>
+
+    <label for="down_payment">Egen opsparing:</label><br>
+    <input type="text" id="down_payment" name="down_payment" value="{{ input_down_payment }}" readonly><br>
+
+    <label for="bond_price">Kurs på lån:</label><br>
+    <input type="text" id="bond_price" name="bond_price" value="{{ input_bond_price }}" readonly><br>
+
+    <label for="dropdown">Vælg bank:</label><br>
+    <input type="text" id="dropdown" name="dropdown" value="{{ selected_bank }}" readonly><br>
+    <br><br>
+    <label>Hovedstol: {{ principal_value }}</label><br>
+    <label>Kurstab: {{ capital_loss }}</label><br>
+    <br><br>
+
+    <h4>Del med enkelt bruger</h4>
+    <form method="post" action="/share_with_single_user">
+        <label for="share_with_single_user">Del med (indsæt én email):</label>
+        <input type="text" id="share_with_single_user" name="share_with_single_user">
+
+        <label for="single_user_access_level">Vælg access level:</label>
+        <select id="single_user_access_level" name="single_user_access_level">
+            {% for level in list_access_levels %}
+            <option value="{{ level }}" {% if level == selected_access_level %} selected {% endif %}>{{ level }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="Del med bruger">
+        <input type="hidden" name="calc_id" value="{{ calc_id }}">
+    </form>
+    <br><br>
+
+    <h4>Del med alle brugere</h4>
+    <form method="post" action="/share_with_all_users">
+        <label for="all_users_access_level">Vælg access level:</label>
+        <select id="all_users_access_level" name="all_users_access_level">
+            {% for level in list_access_levels %}
+            <option value="{{ level }}" {% if level == selected_access_level %} selected {% endif %}>{{ level }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="Del med alle">
+        <input type="hidden" name="calc_id" value="{{ calc_id }}">
+    </form>
+    <br><br>
+
+    <form method="post" action="/logged_in">
+        <input type="hidden" name="house_price" value="{% if input_house_price %}{{ input_house_price }}{% else %}1.000.000{% endif %}">
+        <input type="hidden" name="down_payment" value="{% if input_down_payment %}{{ input_down_payment }}{% else %}50.000{% endif %}">
+        <input type="hidden" name="bond_price" value="{% if input_bond_price %}{{ input_bond_price }}{% else %}95,8{% endif %}">
+        <input type="hidden" name="dropdown" value="{{ selected_bank }}">
+        <input type="submit" value="Fortryd/tilbage">
+    </form>
+</body>
+</html>

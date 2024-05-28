@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            border-collapse: separate; /* Remove space between table cells */
+            border-spacing: 10px 0; /* horizontal and vertical spacing */
+            text-align: left;
+        }
+        .edit-button { margin-top: 0; }
+        form { margin: 0; }
+        button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h3>Rediger access level</h3>
+    <label for="house_price">Boligens pris:</label><br>
+    <input type="text" id="house_price" name="house_price" value="{{ input_house_price }}" readonly><br>
+
+    <label for="down_payment">Egen opsparing:</label><br>
+    <input type="text" id="down_payment" name="down_payment" value="{{ input_down_payment }}" readonly><br>
+
+    <label for="bond_price">Kurs på lån:</label><br>
+    <input type="text" id="bond_price" name="bond_price" value="{{ input_bond_price }}" readonly><br>
+    <label for="dropdown">Vælg bank:</label><br>
+    <input type="text" id="dropdown" name="dropdown" value="{{ selected_bank }}" readonly><br>
+    <br><br>
+    <label>Hovedstol: {{ principal_value }}</label><br>
+    <label>Kurstab: {{ capital_loss }}</label><br>
+    <br><br>
+
+    <label for="email_shared_with">Delt med:</label><br>
+    <input type="text" id="email_shared_with" name="email_shared_with" value="{{ shared_with }}" readonly><br>
+
+    <label for="selected_access_level">Valgte access level:</label><br>
+    <input type="text" id="selected_access_level" name="selected_access_level" value="{{ input_selected_access_level }}" readonly><br>
+    <br><br>
+
+    <form method="post" action="/update_sharing_access">
+        <label for="new_access_level">Vælg nyt access level:</label>
+        <select id="new_access_level" name="new_access_level">
+            {% for level in list_access_levels %}
+            <option value="{{ level }}" {% if level == input_selected_access_level %} selected {% endif %}>{{ level }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" name="action" value="Gem ændringer">
+        <input type="submit" name="action" value="Stop deling">
+        <input type="submit" name="action" value="Fortryd/tilbage">
+        <input type="hidden" name="calc_id" value="{{ calc_id }}">
+        <input type="hidden" name="email_shared_with" value="{{ shared_with }}">
+    </form>
+</body>
+</html>
