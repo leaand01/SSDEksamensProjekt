@@ -52,6 +52,7 @@ port: 5432
 **Flowchart**
 
 ![Flowchart](FlLowshart.drawio.png)
+![ing5erdiagram](https://github.com/leaand01/SSDEksamensProjekt/blob/master/FLowchart.drawio.png)
 
 
 
