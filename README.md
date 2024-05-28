@@ -13,7 +13,9 @@ To run this project:
     c. Import the SQL dump file SSDEksamensProjekt-DB_dump.sql into the created database in b. This is done by running the command: psql -U postgres -d your_database_name -f SSDEksamensProjekt_DB_dump.sql
 3. Create a .env file at the root directory and insert values spedified further below (must be done before app can run).   
 4. Run app by running command: python main.py
-5. Database info when running app: 2 users have been created in the database: nobody@gmail.com and noone@gmail. For the purpose of playing around with sharing calculations.
+5. You must have gmail.com address in order to login to the app
+6. Database info when running app: 2 users have been created in the database: nobody@gmail.com and noone@gmail. For the purpose of playing around with sharing calculations.
+
 
 
 **Remarks**
