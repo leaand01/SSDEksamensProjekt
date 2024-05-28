@@ -1,5 +1,14 @@
 **SSDEksamensProjekt**
 
+Website for calculating the principal of arbitrary loans. The calculations can be saved for individual users and shared with other users. You can choose to share one or more calculations with individual users or all users.
+
+Below you will find:
+
+- instructions how to run application
+- Remarks
+- PostGreSQL database connection info
+- Flowchart of application
+
 
 **How to run**
 
@@ -38,6 +47,12 @@ password: PostgreSQL_mySecretPassword
 
 port number the server should listen on:
 port: 5432
+
+
+**Flowchart**
+
+![Flowchart](FlLowshart.drawio.png)
+
 
 
 
