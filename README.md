@@ -10,6 +10,7 @@ Below you will find:
 - Flowchart of application
 
 <br>
+
 **How to run**
 
 The project is coded in python. Use e.g. PyCharm.
@@ -25,7 +26,7 @@ To run this project:
 5. You must have gmail.com address in order to login to the app
 6. Database info when running app: 2 users have been created in the database: nobody@gmail.com and noone@gmail. For the purpose of playing around with sharing calculations.
 
-
+<br>
 
 **Remarks**
 
@@ -40,6 +41,7 @@ secret_key_for_encrypton=ctmXNFrGJKuc5U2wDwGnGZR2bDeOFNpdgNs8wfDAFIw=
 
 postgresql_db_url="postgresql://postgres:PostgreSQL_mySecretPassword@localhost:5432/SSDEksamensProjekt_DB"
 
+<br>
 
 **PostGreSQL database connection information used**
 
@@ -48,6 +50,7 @@ password: PostgreSQL_mySecretPassword
 port number the server should listen on:
 port: 5432
 
+<br>
 
 **Flowchart**
 
