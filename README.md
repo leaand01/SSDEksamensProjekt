@@ -9,7 +9,7 @@ Below you will find:
 - PostGreSQL database connection info
 - Flowchart of application
 
-
+<br>
 **How to run**
 
 The project is coded in python. Use e.g. PyCharm.
