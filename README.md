@@ -16,7 +16,8 @@ To run this project:
 
 
 **Remarks**
-The .env file has been shared on Github, for easy setup and as this is a test project. Normally .env containing confidential information should never be committed.
+- The .env file has been shared on Github, for easy setup and as this is a test project. Normally .env containing confidential information should never be committed.
+- For https we have generated a self-signed TLS certificate using OpenSSL, as this is a test project. This should not be done for production code.
 
 
 **PostGreSQL database connection information used**
