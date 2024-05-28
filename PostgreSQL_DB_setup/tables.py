@@ -2,6 +2,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Enum as SQLAlchemyEnum
 import enum
 
+
 Base = declarative_base()
 
 

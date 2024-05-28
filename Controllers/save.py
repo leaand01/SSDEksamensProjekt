@@ -47,7 +47,7 @@ def new_access_level_redirect(db_session, user_inputs):
         updated_values = {'access_level': user_inputs['new_access_level']}
 
         if user_inputs['email_shared_with'] == 'alle brugere':
-            (db_session.query(SharedCalcsWithAll).filter(SharedCalcsWithAll.calc_id == user_inputs['calc_id'])  # en beregning kan kun deles en gang med alle så burde være ok her
+            (db_session.query(SharedCalcsWithAll).filter(SharedCalcsWithAll.calc_id == user_inputs['calc_id'])
              .update(updated_values))
         else:
             (db_session.query(SharedCalcsWithFew).filter(SharedCalcsWithFew.calc_id == user_inputs['calc_id'],

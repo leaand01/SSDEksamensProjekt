@@ -17,22 +17,6 @@ def get_current_user(request: Request):
     else:
         raise HTTPException(status_code=401, detail='not authenticated. Access denied - you are not logged in.')
 
-# original version
-# def get_db() -> Session:
-#     engine = create_engine(config.postgresql_db_url)
-#     session = sessionmaker(bind=engine)
-#     # Session = sessionmaker(bind=engine)
-#
-#     db_session = session()
-#     # db_session = Session()
-#     event.listen(SharedCalcsWithAll, 'after_insert', share_with_all_users)  # forsøg når fjerned user_id i SharedCalcsWithAll
-#
-#     try:
-#         yield db_session
-#     finally:
-#         db_session.close()
-
-
 
 def get_db() -> Session:
     engine = create_engine(config.postgresql_db_url)

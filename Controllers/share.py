@@ -9,6 +9,7 @@ from PostgreSQL_DB_setup.tables import SharedCalcsWithFew, SharedCalcsWithAll
 from Controllers import get
 from Controllers.view_redirects import views
 
+
 def calc_values_redirect(request: Request, db_session, user_inputs):
     # load calc values to share
     calc_values_as_dict = get.calc_values(db_session, user_inputs)

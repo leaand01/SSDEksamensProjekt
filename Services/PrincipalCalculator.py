@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict
 
 from Interfaces.ICalculator import ICalculator
 from Interfaces.IProcessor import IProcessor

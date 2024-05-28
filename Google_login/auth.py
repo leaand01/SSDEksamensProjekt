@@ -10,7 +10,6 @@ from starlette.responses import RedirectResponse
 import config
 from Controllers.get import get_current_user_id
 from Cryptography.encryption_funcs import crypto
-from PostgreSQL_DB_setup.session_funcs import delete_shared_calcs
 from PostgreSQL_DB_setup.tables import Users, SharedCalcsWithAll
 from Middleware.getters import get_db, temp_deactivate_event_listener
 from Middleware.rate_limiter import limiter

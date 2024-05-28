@@ -32,18 +32,8 @@ hvor postgres er username SSDEksamensProjekt_DB er database name og SSDEksamensP
 password er PostgreSQL_mySecretPassword
 
 
-
-pg_dump -U username -d dbname -F p -f filename.sql
-pg_dump -U postgres -d SSDEksamensProjekt_DB -F p -f SSDEksamensProjekt_DB_dump.sql
-
-
 Genoprette databasen fra SQL-filen:
-psql -U username -d dbname -f filename.sql
 psql -U postgres -d SSDEksamensProjekt_DB -f SSDEksamensProjekt_DB_dump.sql
-
-
-
-postgresql_db_url="postgresql://postgres:PostgreSQL_mySecretPassword@localhost:5432/SSDEksamensProjekt_DB"
 
 
 """

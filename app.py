@@ -65,7 +65,7 @@ async def save_calc(request: Request, current_user_email: Dict = Depends(get_cur
     return save.current_user_calc_redirect(db_session, user_inputs, current_user_email)
 
 
-@app.post('/edit_calc')  # edit current users calc or calc shared with current_user
+@app.post('/edit_calc')
 @limiter.limit(config.slow_api_rate_limit)
 async def edit_calc(request: Request, current_user_email: Dict = Depends(get_current_user), db_session: Session = Depends(get_db)):
     user_inputs = request.state.form_data
@@ -100,7 +100,7 @@ async def share_with_all(request: Request, current_user_email: Dict = Depends(ge
     return share.calc_with_all_users_redirect(db_session, user_inputs, current_user_email)
 
 
-@app.post('/edit_sharing_access')  # edit sharing privileges of calc shared by current user
+@app.post('/edit_sharing_access')
 @limiter.limit(config.slow_api_rate_limit)
 async def edit_sharing_access(request: Request, current_user_email: Dict = Depends(get_current_user), db_session: Session = Depends(get_db)):
     user_inputs = request.state.form_data

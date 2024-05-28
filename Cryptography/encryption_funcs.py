@@ -2,7 +2,6 @@ import base64
 from typing import Callable
 
 from Crypto.Cipher import AES
-
 import config
 
 

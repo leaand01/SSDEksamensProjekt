@@ -20,11 +20,9 @@ def init_db():
         ):
         Base.metadata.create_all(engine)
         session = sessionmaker(bind=engine)
-        # Session = sessionmaker(bind=engine)
 
-        event.listen(SharedCalcsWithAll, 'after_insert', share_with_all_users)  # forsøg
+        event.listen(SharedCalcsWithAll, 'after_insert', share_with_all_users)
         session = session()
-        # session = Session()
 
         # Create user with shared calcs
         user1 = Users(email=crypto.encrypt('nobody@gmail.com'))
@@ -50,14 +48,6 @@ def init_db():
 
         session.add_all([calc1, calc2, calc3, calc4])
         session.commit()
-
-        # # forsøg ny tabel
-        # calc1_share_all = SharedCalcsWithAll(calc_id=calc1.calc_id, access_level='read_only')
-        # calc2_share_all = SharedCalcsWithAll(calc_id=calc2.calc_id, access_level='write')
-        # calc3_share_all = SharedCalcsWithAll(calc_id=calc3.calc_id, access_level='write')
-        #
-        # session.add_all([calc1_share_all, calc2_share_all, calc3_share_all])
-        # session.commit()
 
         # share all user1 calcs with all (first share with himself)
         calc1_share_all = SharedCalcsWithAll(calc_id=calc1.calc_id, user_id=user1.user_id, access_level='read_only')
