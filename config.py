@@ -11,6 +11,7 @@ google_sso = {"client_id": os.environ.get('client_id', None),
               "scope": ['email', 'openid'],
               }
 
+
 secret_key_for_signing_session_cookie = os.environ.get('secret_key_for_signing_session_cookie')
 slow_api_rate_limit = '5/second'
 
