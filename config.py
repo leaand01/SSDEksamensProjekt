@@ -5,14 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# google_sso = {"client_id": os.environ.get('client_id', None),
-#               "client_secret": os.environ.get('client_secret', None),
-#               "redirect_uri": "https://127.0.0.1:8000/auth",
-#               "scope": ['email', 'openid'],
-#               # "allow_insecure_http": True,  # TODO: Tror kan fjernes da nu https
-#               "use_state": True,  # TODO: may be depreciaetd
-#               }
-
 google_sso = {"client_id": os.environ.get('client_id', None),
               "client_secret": os.environ.get('client_secret', None),
               "redirect_uri": "https://127.0.0.1:8000/auth",

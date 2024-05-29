@@ -16,7 +16,13 @@ from Middleware.getters import get_db, temp_deactivate_event_listener
 from Middleware.rate_limiter import limiter
 from Controllers import get
 
-##### copied from chatGPT
+
+@asynccontextmanager
+async def get_google_sso():
+    google_sso = GoogleSSO(**config.google_sso)
+    yield google_sso
+
+
 @limiter.limit(config.slow_api_rate_limit)
 async def google_login(request: Request):
     """Login with Google account"""
@@ -24,7 +30,6 @@ async def google_login(request: Request):
         state = secrets.token_urlsafe(32)
         request.session['state'] = state
 
-        # Generate login URL with the state parameter
         return await google_sso.get_login_redirect(redirect_uri=request.url_for("google_callback"),
                                                    params={"prompt": "login"},
                                                    state=state
@@ -35,14 +40,12 @@ async def google_login(request: Request):
 async def google_callback(request: Request, db_session: Session = Depends(get_db)):
     """Process login response from Google and return user info"""
     async with get_google_sso() as google_sso:
-        # Retrieve the state from the session
         stored_state = request.session.pop('state', None)
         received_state = request.query_params.get("state")
 
         if stored_state != received_state:
-            raise HTTPException(status_code=400, detail="State parameter mismatch")
+            raise HTTPException(status_code=400, detail="State parameters do not match")
 
-        # Process the login
         user = await google_sso.verify_and_process(request)
 
         # if user do not exist
@@ -62,52 +65,6 @@ async def google_callback(request: Request, db_session: Session = Depends(get_db
             request.session['user_email'] = existing_encrypted_email
 
         return RedirectResponse(url="/logged_in")
-
-
-
-
-#####
-
-
-@asynccontextmanager
-async def get_google_sso():
-    google_sso = GoogleSSO(**config.google_sso)
-    yield google_sso
-
-
-# @limiter.limit(config.slow_api_rate_limit)
-# async def google_login(request: Request):
-#     """Login with Google account"""
-#     async with get_google_sso() as google_sso:
-#         # Generate login URL with prompt=login parameter
-#         return await google_sso.get_login_redirect(redirect_uri=request.url_for("google_callback"),
-#                                                    params={"prompt": "login"}
-#                                                    )
-#
-#
-# @limiter.limit(config.slow_api_rate_limit)
-# async def google_callback(request: Request, db_session: Session = Depends(get_db)):
-#     """Process login response from Google and return user info"""
-#     async with get_google_sso() as google_sso:
-#         user = await google_sso.verify_and_process(request)
-#
-#     # if user do not exist
-#     existing_user = get.user_if_exist(db_session, user.email)
-#     if existing_user is None:
-#         encrypted_email = crypto.encrypt(user.email)
-#         db_session.add(Users(email=encrypted_email))
-#         db_session.commit()
-#
-#         request.session['user_email'] = encrypted_email
-#
-#         share_existing_calcs_with_new_user(encrypted_email, db_session)
-#
-#     # if user exist
-#     else:
-#         existing_encrypted_email = existing_user.email
-#         request.session['user_email'] = existing_encrypted_email
-#
-#     return RedirectResponse(url="/logged_in")
 
 
 def share_existing_calcs_with_new_user(new_user_email, db_session):

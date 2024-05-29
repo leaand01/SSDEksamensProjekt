@@ -20,8 +20,6 @@ from Google_login import auth
 import config
 
 
-# TODO: husk at lave dump efter sidste clean/refaktorering. brug ikke for lang tid.
-
 init_db()
 limiter = rate_limiter.limiter
 app = FastAPI()
