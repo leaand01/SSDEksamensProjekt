@@ -88,6 +88,8 @@ async def share_calc(request: Request, current_user_email: Dict = Depends(get_cu
 @limiter.limit(config.slow_api_rate_limit)
 async def share_with_selected_user(request: Request, current_user_email: Dict = Depends(get_current_user), db_session: Session = Depends(get_db)):
     user_inputs = request.state.form_data
+    print('share_with_selected_user:')
+    print('user_inputs: ', user_inputs)
     return share.calc_with_user_redirect(request, db_session, user_inputs)
 
 
@@ -101,14 +103,18 @@ async def share_with_all(request: Request, current_user_email: Dict = Depends(ge
 @app.post('/edit_sharing_access')
 @limiter.limit(config.slow_api_rate_limit)
 async def edit_sharing_access(request: Request, current_user_email: Dict = Depends(get_current_user), db_session: Session = Depends(get_db)):
+    print('\n\nedit_sharing_access')
     user_inputs = request.state.form_data
+    print('user_inputs: ', user_inputs)
     return edit.shared_calc_redirect(request, db_session, user_inputs)
 
 
 @app.post('/update_sharing_access')
 @limiter.limit(config.slow_api_rate_limit)
 async def save_updated_sharing_access(request: Request, current_user_email: Dict = Depends(get_current_user), db_session: Session = Depends(get_db)):
+    print('\n\nsave_updated_sharing_access:')
     user_inputs = request.state.form_data
+    print('user_inputs: ', user_inputs)
     return save.new_access_level_redirect(db_session, user_inputs)
 
 
