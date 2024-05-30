@@ -41,24 +41,20 @@ def changes_to_calc_redirect(db_session, user_inputs):
 
 
 def new_access_level_redirect(db_session, user_inputs):
-    print('\n\nnew_access_level_redirect:')
-    print('user_inputs: ', user_inputs)
-
-
     selected_user = user_if_exist(db_session, user_inputs['email_shared_with'])
-
-    print('selected_user: ', selected_user)
 
     if user_inputs['action'] == 'Gem ændringer':
         updated_values = {'access_level': user_inputs['new_access_level']}
 
         if user_inputs['email_shared_with'] == 'alle brugere':
             (db_session.query(SharedCalcsWithAll).filter(SharedCalcsWithAll.calc_id == user_inputs['calc_id'])
-             .update(updated_values))
+             .update(updated_values)
+             )
         else:
             (db_session.query(SharedCalcsWithFew).filter(SharedCalcsWithFew.calc_id == user_inputs['calc_id'],
                                                          SharedCalcsWithFew.user_id == selected_user.user_id
-                                                         ).update(updated_values))
+                                                         ).update(updated_values)
+             )
         db_session.commit()
 
     if user_inputs['action'] == 'Stop deling':

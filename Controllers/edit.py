@@ -34,9 +34,7 @@ def calc_redirect(request: Request, db_session, user_inputs):
 
 
 def shared_calc_redirect(request: Request, db_session, user_inputs):
-    print('shared_calc_redirect:')
     shared_calc_details = db_session.query(Calcs).filter(Calcs.calc_id == user_inputs['calc_id']).one()
-
 
     context = {'request': request,
                'dropdown_bank_names': dropdown_bank_names,

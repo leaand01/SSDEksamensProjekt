@@ -30,11 +30,7 @@ def calc_values_redirect(request: Request, db_session, user_inputs):
 
 
 def calc_with_user_redirect(request: Request, db_session, user_inputs):
-    print('calc_with_user_redirect:')
-
     existing_user = get.user_if_exist(db_session, user_inputs['share_with_single_user'])
-
-    print('existing_user: ', existing_user)
 
     if existing_user is None:
         response_string = 'Hvis den indtastede email er i databasen, er din beregning nu delt.'
@@ -42,8 +38,6 @@ def calc_with_user_redirect(request: Request, db_session, user_inputs):
 
     else:
         try:
-            print('adding to sharedcalcsWithFew')
-            print(f'calc_id {user_inputs["calc_id"]}, user_id {existing_user.user_id}, access_level {user_inputs["single_user_access_level"]}')
             shared_calc_few = SharedCalcsWithFew(calc_id=user_inputs['calc_id'],
                                                  user_id=existing_user.user_id,
                                                  access_level=user_inputs['single_user_access_level'],

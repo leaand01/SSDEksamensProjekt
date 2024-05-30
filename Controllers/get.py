@@ -22,33 +22,17 @@ async def user_inputs(request: Request):
 
 def logged_in_redirect(request: Request, db_session, current_user_email, user_inputs):
     # load current user calcs
-    list_current_user_calcs, list_current_user_calc_ids = current_user_calcs_and_ids(current_user_email, db_session)  # now ordered
+    list_current_user_calcs, list_current_user_calc_ids = current_user_calcs_and_ids(current_user_email, db_session)
 
-    # # load calcs shared by current user
-    # current_user_shared_with_emails, current_user_shared_calc_access_levels, current_user_shared_calc_details = (
-    #     current_user_shared_calcs(current_user_email, db_session)
-    # )
-
-    ### forsøg
+    # load calcs shared by current user
     current_user_shared_with_emails, current_user_shared_calc_access_levels, current_user_shared_calc_details = (
-        current_user_shared_calcs(list_current_user_calc_ids, db_session)  # ordered calcs
-    )
-    ###
-
-
-    print('logged_in_redirect:')
-    print('current_user_shared_with_emails: ', current_user_shared_with_emails)
-    print('current_user_shared_calc_access_levels: ', current_user_shared_calc_access_levels)
-
-
+        current_user_shared_calcs(list_current_user_calc_ids, db_session)
+        )
 
     # load calcs shared with current user
     all_shared_calcs_with_user, list_all_shared_calcs_access_level = (
         calcs_shared_with_current_user(current_user_email, db_session)
-    )
-    print('\nshared with current user:')
-    print('all_shared_calcs_with_user: ', all_shared_calcs_with_user)
-    print('list_all_shared_calcs_access_level: ', list_all_shared_calcs_access_level)
+        )
 
     principal = calculated_principal(user_inputs)
 
@@ -73,16 +57,10 @@ def logged_in_redirect(request: Request, db_session, current_user_email, user_in
 def current_user_calcs_and_ids(current_user_email, db_session):
     current_user_id = get_current_user_id(current_user_email, db_session)
 
-    ### forsøg med order by
-    # Order by user_id and then by calc_id within each user_id
     list_current_user_calcs = (db_session.query(Calcs).filter(Calcs.user_id == current_user_id)
                                .order_by(asc(Calcs.user_id), asc(Calcs.calc_id))
-                               .all())
-
-    ###
-
-
-    # list_current_user_calcs = db_session.query(Calcs).filter(Calcs.user_id == current_user_id).all()
+                               .all()
+                               )
     list_current_user_calc_ids = [calc.calc_id for calc in list_current_user_calcs]
     return list_current_user_calcs, list_current_user_calc_ids
 
@@ -91,38 +69,17 @@ def get_current_user_id(current_user_email, db_session):
     return db_session.query(Users.user_id).filter(Users.email == current_user_email).one()[0]
 
 
-# def current_user_shared_calcs(current_user_email, db_session):
-#
-#     list_current_user_calcs, list_current_user_calc_ids = current_user_calcs_and_ids(current_user_email, db_session)  # TODO kan tage calc id som input i stedet for at kalde fkt igen her
-#
-#     # load calc info of calcs shared with few
-#     list_sharedWithFew_emails, list_sharedWithFew_access_level, list_sharedWithFew_calc_details = (
-#         get_calcs_sharedWithFew(list_current_user_calc_ids, db_session)
-#     )
-#
-#     # load calc info of calcs shared with all
-#     list_sharedWithAll_access_level, list_sharedWithAll_calc_details = (
-#         get_calcs_sharedWithAll(list_current_user_calc_ids, db_session)
-#     )
-#
-#     # combine calc info of all current user shared calcs
-#     shared_with_emails = list_sharedWithFew_emails + ['alle brugere'] * len(list_sharedWithAll_access_level)
-#     shared_with_access_levels = list_sharedWithFew_access_level + list_sharedWithAll_access_level
-#     shared_with_calc_details = list_sharedWithFew_calc_details + list_sharedWithAll_calc_details
-#
-#     return shared_with_emails, shared_with_access_levels, shared_with_calc_details
-# forsøg
-def current_user_shared_calcs(list_current_user_calc_ids, db_session):  # ordered calcs
+def current_user_shared_calcs(list_current_user_calc_ids, db_session):
 
     # load calc info of calcs shared with few
     list_sharedWithFew_emails, list_sharedWithFew_access_level, list_sharedWithFew_calc_details = (
         get_calcs_sharedWithFew(list_current_user_calc_ids, db_session)
-    )
+        )
 
     # load calc info of calcs shared with all
     list_sharedWithAll_access_level, list_sharedWithAll_calc_details = (
         get_calcs_sharedWithAll(list_current_user_calc_ids, db_session)
-    )
+        )
 
     # combine calc info of all current user shared calcs
     shared_with_emails = list_sharedWithFew_emails + ['alle brugere'] * len(list_sharedWithAll_access_level)
@@ -132,24 +89,13 @@ def current_user_shared_calcs(list_current_user_calc_ids, db_session):  # ordere
     return shared_with_emails, shared_with_access_levels, shared_with_calc_details
 
 
-
 def get_calcs_sharedWithFew(list_current_user_calc_ids, db_session):
-
-    ### forsøg
-
+    # load calcs shared with few others
     list_current_user_calcs_sharedWithFew = (db_session.query(SharedCalcsWithFew)
                                              .filter(SharedCalcsWithFew.calc_id.in_(list_current_user_calc_ids))
                                              .order_by(asc(SharedCalcsWithFew.user_id), asc(SharedCalcsWithFew.calc_id))
                                              .all()
-                                             )  # ordered
-    ###
-
-
-    # load calcs shared with few others
-    # list_current_user_calcs_sharedWithFew = (db_session.query(SharedCalcsWithFew)
-    #                                          .filter(SharedCalcsWithFew.calc_id.in_(list_current_user_calc_ids))
-    #                                          .all()
-    #                                          )
+                                             )
 
     # get info about calcs shared with few others
     if not list_current_user_calcs_sharedWithFew:
@@ -157,27 +103,15 @@ def get_calcs_sharedWithFew(list_current_user_calc_ids, db_session):
         list_sharedWithFew_access_level = []
         list_sharedWithFew_calc_details = []
     else:
-
         list_sharedWithFew_user_ids = [calc.user_id for calc in list_current_user_calcs_sharedWithFew]
 
-        ### forsøg
         list_sharedWithFew_emails = [crypto.decrypt(email) for _, email in
                                      db_session.query(SharedCalcsWithFew.user_id, Users.email)
                                      .join(Users, SharedCalcsWithFew.user_id == Users.user_id)
                                      .filter(SharedCalcsWithFew.user_id.in_(list_sharedWithFew_user_ids))
                                      .order_by(asc(SharedCalcsWithFew.user_id), asc(SharedCalcsWithFew.calc_id))
                                      .all()
-                                     ]  # ordered
-        ###
-
-
-
-        # list_sharedWithFew_emails = [crypto.decrypt(email) for _, email in
-        #                              db_session.query(SharedCalcsWithFew.user_id, Users.email)
-        #                              .join(Users, SharedCalcsWithFew.user_id == Users.user_id)
-        #                              .filter(SharedCalcsWithFew.user_id.in_(list_sharedWithFew_user_ids))
-        #                              .all()
-        #                              ]
+                                     ]
         list_sharedWithFew_access_level = [calc.access_level for calc in list_current_user_calcs_sharedWithFew]
 
         # get calc details of the users shared calcs
@@ -211,33 +145,24 @@ def get_calcs_sharedWithAll(list_current_user_calc_ids, db_session):
 def calcs_shared_with_current_user(current_user_email, db_session):
     current_user_id = get_current_user_id(current_user_email, db_session)
 
-    # shared_with_all = db_session.query(SharedCalcsWithAll).filter(SharedCalcsWithAll.user_id == current_user_id).all()
-    # shared_with_user = db_session.query(SharedCalcsWithFew).filter(SharedCalcsWithFew.user_id == current_user_id).all()
-
-    ### forsøg
     shared_with_all = (db_session.query(SharedCalcsWithAll).filter(SharedCalcsWithAll.user_id == current_user_id)
                        .order_by(asc(SharedCalcsWithAll.user_id), asc(SharedCalcsWithAll.calc_id))
                        .all()
-                       )  # ordered
+                       )
 
     shared_with_user = (db_session.query(SharedCalcsWithFew).filter(SharedCalcsWithFew.user_id == current_user_id)
                         .order_by(asc(SharedCalcsWithFew.user_id), asc(SharedCalcsWithFew.calc_id))
                         .all()
-                        )  # ordered
-    ###
-
+                        )
 
     all_shared_calcs_info = shared_with_all + shared_with_user
     all_shared_calc_ids = [shared_info.calc_id for shared_info in all_shared_calcs_info]
 
-    ### forsøg
     all_shared_calcs_with_user = (db_session.query(Calcs).filter(Calcs.calc_id.in_(all_shared_calc_ids))
                                   .order_by(asc(Calcs.user_id), asc(Calcs.calc_id))
                                   .all()
                                   )
-    ###
 
-    # all_shared_calcs_with_user = db_session.query(Calcs).filter(Calcs.calc_id.in_(all_shared_calc_ids)).all()
     list_shared_access_level = [shared_info.access_level.value for shared_info in all_shared_calcs_info]
     return all_shared_calcs_with_user, list_shared_access_level
 
